@@ -8,23 +8,6 @@
 
 import UIKit
 
-let kTileTagStart = 2016
-
-let kGridSize: Int = 4
-let kMaxTileCount = kGridSize * kGridSize
-
-// These dimensions are for a grid size 300x300
-let kOuterPadding = 8.0
-let kInnerPadding = kOuterPadding
-let kWidth = 65.0
-let kHeight = kWidth
-let kRefDimension = 300.0
-
-// Macros
-let random2Or4: Void -> Int = { return Int(pow(Double(2), Double(arc4random_uniform(2) + 1))) }
-let rowFromIndex: Int -> Int = { index in return index / kGridSize }
-let columnFromIndex: Int -> Int = { index in return index % kGridSize }
-let indexForPosition: (Int, Int) -> Int = { (row, column) in return row * kGridSize + column }
 
 
 enum TileSwipeDirection {
@@ -33,45 +16,41 @@ enum TileSwipeDirection {
 
 class GridViewController: UIViewController {
 
+    var gameOver = false
     @IBOutlet weak var gridImageView: UIImageView!
-    
-    var swipeDirection: TileSwipeDirection = .None
-    var numberOfAddedTiles: Int = 0
-    
-    @IBOutlet weak var leftSwipeGestureRecognizer: UISwipeGestureRecognizer!
-    @IBOutlet weak var rightSwipeGestureRecognizer: UISwipeGestureRecognizer!
-    @IBOutlet weak var upwardSwipeGestureRecognizer: UISwipeGestureRecognizer!
-    @IBOutlet weak var downwardSwipeGestureRecognizer: UISwipeGestureRecognizer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    private func initializeGrid() {
-        self.numberOfAddedTiles = 0
-        self.swipeDirection = .None
-        
-    }
-
-    // MARK: - IB Action
-    @IBAction func resetGameAction(sender: UIBarButtonItem) {
-        for tile in self.gridImageView.subviews {
-            tile.removeFromSuperview()
-        }
-        self.numberOfAddedTiles = 0
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         
         self.createRandomTile()
         self.createRandomTile()
     }
     
-    @IBAction func didSwipe(sender: AnyObject) {
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
+    // MARK: - IB Action
+    @IBAction func resetGameAction(sender: UIBarButtonItem?) {
+        self.gameOver = false
+        for tile in self.gridImageView.subviews {
+            tile.removeFromSuperview()
+        }
         
+        self.createRandomTile()
+        self.createRandomTile()
+    }
+    
+    @IBAction func didSwipeLeft(sender: AnyObject) {
+        NSNotificationCenter.defaultCenter().postNotificationName(kSwipeLeftNotification, object: nil)
+        
+        NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: "createRandomTile", userInfo: nil, repeats: false)
     }
     
     // MARK: - Grid related calculation
@@ -84,8 +63,8 @@ class GridViewController: UIViewController {
     }
     
     private func originFor(row:Int, column:Int) -> CGPoint {
-        let x = self.hDimensionForGrid(kOuterPadding + (kWidth + kInnerPadding) * Double(row))
-        let y = self.vDimensionForGrid(kOuterPadding + (kHeight + kInnerPadding) * Double(column))
+        let x = self.hDimensionForGrid(kOuterPadding + (kWidth + kInnerPadding) * Double(column))
+        let y = self.vDimensionForGrid(kOuterPadding + (kHeight + kInnerPadding) * Double(row))
         return CGPointMake(CGFloat(x), CGFloat(y))
     }
     
@@ -95,42 +74,122 @@ class GridViewController: UIViewController {
     }
     
     // MARK: - Tile creation, deletion
-    private func createRandomTile() {
-        if self.numberOfAddedTiles == kMaxTileCount {
-            return
+    func createRandomTile() {
+        if !self.gameOver {
+            if self.gridImageView.subviews.count == kMaxTileCount {
+                self.gameOver = true
+                
+                let alertController = UIAlertController(title: "Game Over", message: "Do you want to try again?", preferredStyle: .Alert)
+                alertController.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action) -> Void in
+                    self.resetGameAction(nil)
+                }))
+                alertController.addAction(UIAlertAction(title: "No", style: .Cancel, handler: { (action) -> Void in
+                    
+                }))
+                self.presentViewController(alertController, animated: true, completion: {
+                    
+                })
+                
+                return
+            }
+            
+            var tileIndex:UInt32 = 0
+            repeat {
+                tileIndex = arc4random_uniform(UInt32(kMaxTileCount))
+            } while (self.tileExistsAtIndex(tileIndex))
+            
+            self.createTileAt(Int(tileIndex) , value: random2Or4())
+            
+            NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: "socialize", userInfo: nil, repeats: false)
         }
-        
-        var tileIndex:UInt32 = 0
-        repeat {
-            tileIndex = arc4random_uniform(UInt32(kMaxTileCount))
-        } while (self.tileExistsAtIndex(tileIndex))
-        
-        self.createTileAt(rowFromIndex(Int(tileIndex)), column: columnFromIndex(Int(tileIndex)), value: random2Or4())
     }
     
     private func tileExistsAtIndex(index: UInt32) -> Bool {
-        for tile in self.gridImageView.subviews as! [TileView] {
-            if tile.index == Int(index) {
-//                print("\(index): exists")
-                return true
-            }
+        if (self.gridImageView.viewWithTag(tagForTileAtIndex(Int(index))) != nil) {
+            return true
         }
-//        print("\(index): not exists")
         return false
     }
 
-    private func createTileAt(row: Int, column: Int, value: Int) {
+    private func createTileAt(index: Int, value: Int) {
+        let row = rowFromIndex(index)
+        let column = columnFromIndex(index)
+        
         let frame = self.frameFor(row, column: column)
-        let tile = TileView(frame: frame, value: value, index: indexForPosition(row, column))
+        let tile = TileView(frame: frame)
+        tile.index = index
+        tile.value = value
+//        print("\(tile.tag)")
         self.gridImageView.addSubview(tile)
-        self.numberOfAddedTiles++
     }
     
     private func removeTileAt(row: Int, column: Int) {
-        if let tile = self.gridImageView.viewWithTag(kTileTagStart + indexForPosition(row, column)) as? TileView {
-            tile.removeFromSuperview()
-            self.numberOfAddedTiles--
+        if let tile = self.gridImageView.viewWithTag(tagForTileAtIndex(indexForPosition(row, column))) as? TileView {
+            self.removeTile(tile)
         }
     }
+    
+    private func removeTile(tile: UIControl) {
+        tile.removeFromSuperview()
+    }
+    
+    // MARK: - Slide calculations
+    func socialize() {
+        self.socializeOnLeft()
+    }
+    
+    private func slideInfoTo(row: Int, column: Int, merge: Bool) -> TileSlideInfo {
+        let frame = frameFor(row, column: column)
+        
+        return TileSlideInfo(destinationRow: row, destinationColumn: column, destinationFrame: frame, merge: merge, tileToRemove: nil)
+    }
+    
+    private func socializeOnLeft() {
+        
+        for var row = 0; row < kGridSize; row++ { // iterate top to bottom
+            
+            for var column = 1; column < kGridSize; column++ { // iterate left to right
+                let index = indexForPosition(row, column)
+                if let currentTile = self.gridImageView.viewWithTag(tagForTileAtIndex(index)) as? TileView {
+                    
+                    var leftSlideInfo: TileSlideInfo? = self.slideInfoTo(row, column: 0, merge: false)
+                    for var ic = column-1; ic >= 0; ic-- { // iterate to slide left
+                        let icIndex = indexForPosition(row, ic)
+                        if let nearbyTile = self.gridImageView.viewWithTag(tagForTileAtIndex(icIndex)) as? TileView {
+                            if let nearbyTileLeftSlideInfo = nearbyTile.leftSlideInfo {
+                                // if nearby tile is already sliding check if it is also merging
+                                if !nearbyTileLeftSlideInfo.merge &&  currentTile.value == nearbyTile.value {
+                                    // if nearby tile is NOT merging, and the values are equal then MERGE
+                                    leftSlideInfo = self.slideInfoTo(row, column: ic, merge: true)
+                                    leftSlideInfo!.tileToRemove = nearbyTile
+                                } else {
+                                    let nextColumn = nearbyTileLeftSlideInfo.destinationColumn + 1
+                                    if nextColumn < column {
+                                        leftSlideInfo = self.slideInfoTo(row, column: nextColumn, merge: false)
+                                    } else {
+                                        leftSlideInfo = nil
+                                    }
+                                }
+                            } else { // if nearby tile is NOT already sliding
+                                if currentTile.value == nearbyTile.value {
+                                    leftSlideInfo = self.slideInfoTo(row, column: ic, merge: true)
+                                    leftSlideInfo!.tileToRemove = nearbyTile
+                                } else {
+                                    if ic + 1 < column {
+                                        leftSlideInfo = self.slideInfoTo(row, column: ic + 1, merge: false)
+                                    } else {
+                                        leftSlideInfo = nil
+                                    }
+                                }
+                            }
+                            break
+                        }
+                    }
+                    currentTile.leftSlideInfo = leftSlideInfo
+                }
+            }
+        }
+    }
+
 }
 

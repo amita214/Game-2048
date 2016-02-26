@@ -41,12 +41,6 @@
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="4l5-z5-VIr" secondAttribute="height" multiplier="1:1" id="xQw-Ln-LGr"/>
                                         </constraints>
-                                        <connections>
-                                            <outletCollection property="gestureRecognizers" destination="tIH-sh-uzp" appends="YES" id="9rV-W5-GFM"/>
-                                            <outletCollection property="gestureRecognizers" destination="0lG-A8-nTc" appends="YES" id="h1J-gz-dL5"/>
-                                            <outletCollection property="gestureRecognizers" destination="ltV-38-aMy" appends="YES" id="1zw-oH-If2"/>
-                                            <outletCollection property="gestureRecognizers" destination="aaW-4v-Afy" appends="YES" id="8QJ-6p-RJ6"/>
-                                        </connections>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="0.80000001190000003" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -82,6 +76,12 @@
                                         <include reference="cW4-qq-apv"/>
                                     </mask>
                                 </variation>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="tIH-sh-uzp" appends="YES" id="Ucr-DB-tOv"/>
+                                    <outletCollection property="gestureRecognizers" destination="0lG-A8-nTc" appends="YES" id="yrD-3N-6u7"/>
+                                    <outletCollection property="gestureRecognizers" destination="ltV-38-aMy" appends="YES" id="cQq-Ru-33x"/>
+                                    <outletCollection property="gestureRecognizers" destination="aaW-4v-Afy" appends="YES" id="Ygx-Oz-4Pg"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -96,34 +96,18 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="downwardSwipeGestureRecognizer" destination="aaW-4v-Afy" id="woU-GK-Twm"/>
-                        <outlet property="gridImageView" destination="4l5-z5-VIr" id="52q-4M-s1p"/>
-                        <outlet property="leftSwipeGestureRecognizer" destination="tIH-sh-uzp" id="JeN-Xn-PnO"/>
-                        <outlet property="rightSwipeGestureRecognizer" destination="0lG-A8-nTc" id="6rj-ZZ-SOY"/>
-                        <outlet property="upwardSwipeGestureRecognizer" destination="ltV-38-aMy" id="gHm-qS-ajD"/>
+                        <outlet property="gridImageView" destination="4l5-z5-VIr" id="ezU-9l-MCa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <swipeGestureRecognizer direction="right" id="tIH-sh-uzp">
+                <swipeGestureRecognizer direction="left" id="tIH-sh-uzp" userLabel="Left Swipe Gesture Recognizer">
                     <connections>
-                        <action selector="didSwipe:" destination="BYZ-38-t0r" id="ncH-vU-4j8"/>
+                        <action selector="didSwipeLeft:" destination="BYZ-38-t0r" id="yoR-Ec-LbE"/>
                     </connections>
                 </swipeGestureRecognizer>
-                <swipeGestureRecognizer direction="right" id="0lG-A8-nTc">
-                    <connections>
-                        <action selector="didSwipe:" destination="BYZ-38-t0r" id="lwu-NG-2Xq"/>
-                    </connections>
-                </swipeGestureRecognizer>
-                <swipeGestureRecognizer direction="right" id="ltV-38-aMy">
-                    <connections>
-                        <action selector="didSwipe:" destination="BYZ-38-t0r" id="vHs-lB-amp"/>
-                    </connections>
-                </swipeGestureRecognizer>
-                <swipeGestureRecognizer direction="right" id="aaW-4v-Afy">
-                    <connections>
-                        <action selector="didSwipe:" destination="BYZ-38-t0r" id="tEi-Fy-lQv"/>
-                    </connections>
-                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="right" id="0lG-A8-nTc" userLabel="Right Swipe Gesture Recognizer"/>
+                <swipeGestureRecognizer direction="up" id="ltV-38-aMy" userLabel="Upward Swipe Gesture Recognizer"/>
+                <swipeGestureRecognizer direction="down" id="aaW-4v-Afy" userLabel="Downward Swipe Gesture Recognizer"/>
             </objects>
             <point key="canvasLocation" x="245" y="305"/>
         </scene>

@@ -8,25 +8,26 @@
 
 import UIKit
 
+struct TileSlideInfo {
+//    var destinationIndex: Int
+    var destinationRow: Int
+    var destinationColumn: Int
+    var destinationFrame: CGRect
+    var merge: Bool
+    var tileToRemove: TileView?
+}
+
 class TileView: UIControl {
     
-    var row: Int = 0 {
-        didSet {
-//            self.index = indexForPosition(self.row, self.column)
-        }
-    }
-    var column: Int = 0 {
-        didSet {
-//            self.index = indexForPosition(self.row, self.column)
-        }
-    }
+    var row: Int = 0
+    var column: Int = 0
     
     var index: Int = 0 {
         didSet {
             self.row = rowFromIndex(self.index)
-            self.column = columnFromIndex(self.column)
+            self.column = columnFromIndex(self.index)
             
-            self.tag = kTileTagStart + self.index
+            self.tag = tagForTileAtIndex(self.index)
         }
     }
     
@@ -36,12 +37,15 @@ class TileView: UIControl {
         }
     }
     
-//    var tag: Int = 0
+    var leftSlideInfo: TileSlideInfo!
+    var rightSlideInfo: TileSlideInfo!
+    var upSlideInfo: TileSlideInfo!
+    var downSlideInfo: TileSlideInfo!
     
     private let tile = CAShapeLayer()
 
-    convenience init(frame: CGRect, value: Int, index: Int) {
-        self.init(frame: frame)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
         // add minute hand
         self.tile.bounds = CGRectMake(0.0, 0.0, frame.width, frame.height)
@@ -53,8 +57,56 @@ class TileView: UIControl {
 //        self.tile.shadowOpacity = 0.3
         self.layer.addSublayer(self.tile)
         
-        
-        self.value = value
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "slideTileLeft", name: kSwipeLeftNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "slideTileRight", name: kSwipeRightNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "slideTileUpward", name: kSwipeUpNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "slideTileDownward", name: kSwipeDownNotification, object: nil)
     }
 
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: kSwipeLeftNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: kSwipeRightNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: kSwipeUpNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: kSwipeDownNotification, object: nil)
+    }
+    
+    
+    func slideTo(index: Int, frame: CGRect, merge: Bool, completion: (() -> Void)?) {
+        print("\(self.index) -> \(index): \(merge)")
+        UIView.animateWithDuration(0.2, animations: {
+            self.frame = frame
+            }) { (completed) -> Void in
+                self.index = index
+                if merge {
+                    self.value *= 2
+                    self.leftSlideInfo.tileToRemove?.removeFromSuperview()
+                }
+                self.leftSlideInfo = nil
+                completion?()
+        }
+    }
+    
+    // MARK: Slide
+    func slideTileLeft() {
+        if let slideInfo = self.leftSlideInfo {
+            let index = indexForPosition(slideInfo.destinationRow, slideInfo.destinationColumn)
+            self.slideTo(index, frame: slideInfo.destinationFrame, merge: slideInfo.merge, completion: nil)
+        }
+    }
+    
+    func slideTileRight() {
+        
+    }
+    
+    func slideTileUpward() {
+        
+    }
+    
+    func slideTileDownward() {
+        
+    }
 }

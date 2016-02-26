@@ -13,6 +13,7 @@
 		76228F8C1C7F95A300AE0D19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76228F8B1C7F95A300AE0D19 /* Assets.xcassets */; };
 		76228F8F1C7F95A300AE0D19 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76228F8D1C7F95A300AE0D19 /* LaunchScreen.storyboard */; };
 		76228F991C7F973100AE0D19 /* TileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76228F981C7F973100AE0D19 /* TileView.swift */; };
+		76E609441C7FD97F00396B3C /* Defines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E609431C7FD97F00396B3C /* Defines.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		76228F8E1C7F95A300AE0D19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		76228F901C7F95A300AE0D19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		76228F981C7F973100AE0D19 /* TileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TileView.swift; path = Source/View/TileView.swift; sourceTree = "<group>"; };
+		76E609431C7FD97F00396B3C /* Defines.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Defines.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 		76228F831C7F95A300AE0D19 /* Game-2048 */ = {
 			isa = PBXGroup;
 			children = (
+				76E609431C7FD97F00396B3C /* Defines.swift */,
 				76228F971C7F971600AE0D19 /* View */,
 				76228F841C7F95A300AE0D19 /* AppDelegate.swift */,
 				76228F961C7F970F00AE0D19 /* Controller */,
@@ -157,6 +160,7 @@
 			files = (
 				76228F871C7F95A300AE0D19 /* GridViewController.swift in Sources */,
 				76228F991C7F973100AE0D19 /* TileView.swift in Sources */,
+				76E609441C7FD97F00396B3C /* Defines.swift in Sources */,
 				76228F851C7F95A300AE0D19 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -307,6 +311,7 @@
 				76228F951C7F95A300AE0D19 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
