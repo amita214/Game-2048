@@ -8,20 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		76228F851C7F95A300AE0D19 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76228F841C7F95A300AE0D19 /* AppDelegate.swift */; };
-		76228F871C7F95A300AE0D19 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76228F861C7F95A300AE0D19 /* ViewController.swift */; };
+		76228F871C7F95A300AE0D19 /* GridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76228F861C7F95A300AE0D19 /* GridViewController.swift */; };
 		76228F8A1C7F95A300AE0D19 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76228F881C7F95A300AE0D19 /* Main.storyboard */; };
 		76228F8C1C7F95A300AE0D19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76228F8B1C7F95A300AE0D19 /* Assets.xcassets */; };
 		76228F8F1C7F95A300AE0D19 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76228F8D1C7F95A300AE0D19 /* LaunchScreen.storyboard */; };
+		76228F991C7F973100AE0D19 /* TileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76228F981C7F973100AE0D19 /* TileView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		76228F811C7F95A300AE0D19 /* Game-2048.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Game-2048.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		76228F841C7F95A300AE0D19 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		76228F861C7F95A300AE0D19 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		76228F841C7F95A300AE0D19 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Source/AppDelegate.swift; sourceTree = "<group>"; };
+		76228F861C7F95A300AE0D19 /* GridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GridViewController.swift; path = Source/Controller/GridViewController.swift; sourceTree = "<group>"; };
 		76228F891C7F95A300AE0D19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		76228F8B1C7F95A300AE0D19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		76228F8E1C7F95A300AE0D19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		76228F901C7F95A300AE0D19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		76228F981C7F973100AE0D19 /* TileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TileView.swift; path = Source/View/TileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +56,31 @@
 		76228F831C7F95A300AE0D19 /* Game-2048 */ = {
 			isa = PBXGroup;
 			children = (
+				76228F971C7F971600AE0D19 /* View */,
 				76228F841C7F95A300AE0D19 /* AppDelegate.swift */,
-				76228F861C7F95A300AE0D19 /* ViewController.swift */,
+				76228F961C7F970F00AE0D19 /* Controller */,
 				76228F881C7F95A300AE0D19 /* Main.storyboard */,
 				76228F8B1C7F95A300AE0D19 /* Assets.xcassets */,
 				76228F8D1C7F95A300AE0D19 /* LaunchScreen.storyboard */,
 				76228F901C7F95A300AE0D19 /* Info.plist */,
 			);
 			path = "Game-2048";
+			sourceTree = "<group>";
+		};
+		76228F961C7F970F00AE0D19 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				76228F861C7F95A300AE0D19 /* GridViewController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		76228F971C7F971600AE0D19 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				76228F981C7F973100AE0D19 /* TileView.swift */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -136,7 +155,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				76228F871C7F95A300AE0D19 /* ViewController.swift in Sources */,
+				76228F871C7F95A300AE0D19 /* GridViewController.swift in Sources */,
+				76228F991C7F973100AE0D19 /* TileView.swift in Sources */,
 				76228F851C7F95A300AE0D19 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Grid View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="GridViewController" customModule="Game_2048" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -15,11 +17,118 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fep-M4-y71">
+                                <rect key="frame" x="0.0" y="20" width="600" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="hVI-NP-22W"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="mRS-sk-xlH"/>
+                                    <barButtonItem title="Reset Game" id="8fZ-q6-RCC">
+                                        <connections>
+                                            <action selector="resetGameAction:" destination="BYZ-38-t0r" id="bEr-7H-yxy"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mu6-N6-waD" userLabel="Grid View">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="4l5-z5-VIr">
+                                        <rect key="frame" x="10" y="-22" width="580" height="580"/>
+                                        <gestureRecognizers/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="4l5-z5-VIr" secondAttribute="height" multiplier="1:1" id="xQw-Ln-LGr"/>
+                                        </constraints>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="tIH-sh-uzp" appends="YES" id="9rV-W5-GFM"/>
+                                            <outletCollection property="gestureRecognizers" destination="0lG-A8-nTc" appends="YES" id="h1J-gz-dL5"/>
+                                            <outletCollection property="gestureRecognizers" destination="ltV-38-aMy" appends="YES" id="1zw-oH-If2"/>
+                                            <outletCollection property="gestureRecognizers" destination="aaW-4v-Afy" appends="YES" id="8QJ-6p-RJ6"/>
+                                        </connections>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" red="1" green="0.80000001190000003" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="4l5-z5-VIr" firstAttribute="centerX" secondItem="mu6-N6-waD" secondAttribute="centerX" id="1HD-3E-PEd"/>
+                                    <constraint firstItem="4l5-z5-VIr" firstAttribute="leading" secondItem="mu6-N6-waD" secondAttribute="leading" constant="10" id="GP7-VD-ryN"/>
+                                    <constraint firstItem="4l5-z5-VIr" firstAttribute="centerY" secondItem="mu6-N6-waD" secondAttribute="centerY" id="OzP-zi-6rO"/>
+                                    <constraint firstItem="4l5-z5-VIr" firstAttribute="leading" secondItem="mu6-N6-waD" secondAttribute="leading" priority="998" constant="10" id="SvV-RA-0dD"/>
+                                    <constraint firstItem="4l5-z5-VIr" firstAttribute="top" secondItem="mu6-N6-waD" secondAttribute="top" priority="999" constant="10" id="cW4-qq-apv"/>
+                                    <constraint firstItem="4l5-z5-VIr" firstAttribute="top" secondItem="mu6-N6-waD" secondAttribute="top" constant="10" id="yW8-XI-0F5"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="GP7-VD-ryN"/>
+                                        <exclude reference="SvV-RA-0dD"/>
+                                        <exclude reference="cW4-qq-apv"/>
+                                        <exclude reference="yW8-XI-0F5"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="yW8-XI-0F5"/>
+                                    </mask>
+                                </variation>
+                                <variation key="widthClass=compact">
+                                    <mask key="constraints">
+                                        <include reference="GP7-VD-ryN"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="SvV-RA-0dD"/>
+                                        <include reference="cW4-qq-apv"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="mu6-N6-waD" firstAttribute="top" secondItem="Fep-M4-y71" secondAttribute="bottom" id="1Z6-Cg-Z6X"/>
+                            <constraint firstAttribute="trailing" secondItem="mu6-N6-waD" secondAttribute="trailing" id="Yl3-nu-sEu"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="mu6-N6-waD" secondAttribute="bottom" id="h4x-GL-igq"/>
+                            <constraint firstAttribute="trailing" secondItem="Fep-M4-y71" secondAttribute="trailing" id="iOX-kl-iQZ"/>
+                            <constraint firstItem="Fep-M4-y71" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="swj-Gg-xOH"/>
+                            <constraint firstItem="Fep-M4-y71" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="uKy-bN-XtJ"/>
+                            <constraint firstItem="mu6-N6-waD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="z0E-h6-REq"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="downwardSwipeGestureRecognizer" destination="aaW-4v-Afy" id="woU-GK-Twm"/>
+                        <outlet property="gridImageView" destination="4l5-z5-VIr" id="52q-4M-s1p"/>
+                        <outlet property="leftSwipeGestureRecognizer" destination="tIH-sh-uzp" id="JeN-Xn-PnO"/>
+                        <outlet property="rightSwipeGestureRecognizer" destination="0lG-A8-nTc" id="6rj-ZZ-SOY"/>
+                        <outlet property="upwardSwipeGestureRecognizer" destination="ltV-38-aMy" id="gHm-qS-ajD"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="tIH-sh-uzp">
+                    <connections>
+                        <action selector="didSwipe:" destination="BYZ-38-t0r" id="ncH-vU-4j8"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="right" id="0lG-A8-nTc">
+                    <connections>
+                        <action selector="didSwipe:" destination="BYZ-38-t0r" id="lwu-NG-2Xq"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="right" id="ltV-38-aMy">
+                    <connections>
+                        <action selector="didSwipe:" destination="BYZ-38-t0r" id="vHs-lB-amp"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="right" id="aaW-4v-Afy">
+                    <connections>
+                        <action selector="didSwipe:" destination="BYZ-38-t0r" id="tEi-Fy-lQv"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
+            <point key="canvasLocation" x="245" y="305"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Background" width="600" height="600"/>
+    </resources>
 </document>
