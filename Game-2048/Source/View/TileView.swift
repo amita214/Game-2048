@@ -90,23 +90,41 @@ class TileView: UIControl {
         }
     }
     
+    private func slideTile(slideInfo: TileSlideInfo) {
+        let index = indexForPosition(slideInfo.destinationRow, slideInfo.destinationColumn)
+        self.slideTo(index, frame: slideInfo.destinationFrame, merge: slideInfo.merge, completion: nil)
+    }
+    
     // MARK: Slide
     func slideTileLeft() {
-        if let slideInfo = self.leftSlideInfo {
-            let index = indexForPosition(slideInfo.destinationRow, slideInfo.destinationColumn)
-            self.slideTo(index, frame: slideInfo.destinationFrame, merge: slideInfo.merge, completion: nil)
+        guard let slideInfo = self.leftSlideInfo else {
+            return
         }
+        
+        self.slideTile(slideInfo)
     }
     
     func slideTileRight() {
+        guard let slideInfo = self.rightSlideInfo else {
+            return
+        }
         
+        self.slideTile(slideInfo)
     }
     
     func slideTileUpward() {
+        guard let slideInfo = self.upSlideInfo else {
+            return
+        }
         
+        self.slideTile(slideInfo)
     }
     
     func slideTileDownward() {
+        guard let slideInfo = self.downSlideInfo else {
+            return
+        }
         
+        self.slideTile(slideInfo)
     }
 }

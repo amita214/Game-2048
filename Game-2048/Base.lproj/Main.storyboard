@@ -105,7 +105,11 @@
                         <action selector="didSwipeLeft:" destination="BYZ-38-t0r" id="yoR-Ec-LbE"/>
                     </connections>
                 </swipeGestureRecognizer>
-                <swipeGestureRecognizer direction="right" id="0lG-A8-nTc" userLabel="Right Swipe Gesture Recognizer"/>
+                <swipeGestureRecognizer direction="right" id="0lG-A8-nTc" userLabel="Right Swipe Gesture Recognizer">
+                    <connections>
+                        <action selector="didSwipeRight:" destination="BYZ-38-t0r" id="Tm3-T4-qLQ"/>
+                    </connections>
+                </swipeGestureRecognizer>
                 <swipeGestureRecognizer direction="up" id="ltV-38-aMy" userLabel="Upward Swipe Gesture Recognizer"/>
                 <swipeGestureRecognizer direction="down" id="aaW-4v-Afy" userLabel="Downward Swipe Gesture Recognizer"/>
             </objects>

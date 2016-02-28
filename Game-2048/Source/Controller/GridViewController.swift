@@ -53,6 +53,12 @@ class GridViewController: UIViewController {
         NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: "createRandomTile", userInfo: nil, repeats: false)
     }
     
+    @IBAction func didSwipeRight(sender: AnyObject) {
+        NSNotificationCenter.defaultCenter().postNotificationName(kSwipeRightNotification, object: nil)
+        
+        NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: "createRandomTile", userInfo: nil, repeats: false)
+    }
+    
     // MARK: - Grid related calculation
     private func hDimensionForGrid(value: Double) -> CGFloat {
         return CGFloat(value) * self.gridImageView.frame.width / CGFloat(kRefDimension)
@@ -136,6 +142,7 @@ class GridViewController: UIViewController {
     // MARK: - Slide calculations
     func socialize() {
         self.socializeOnLeft()
+        self.socializeOnRight()
     }
     
     private func slideInfoTo(row: Int, column: Int, merge: Bool) -> TileSlideInfo {
@@ -164,28 +171,62 @@ class GridViewController: UIViewController {
                                     leftSlideInfo!.tileToRemove = nearbyTile
                                 } else {
                                     let nextColumn = nearbyTileLeftSlideInfo.destinationColumn + 1
-                                    if nextColumn < column {
-                                        leftSlideInfo = self.slideInfoTo(row, column: nextColumn, merge: false)
-                                    } else {
-                                        leftSlideInfo = nil
-                                    }
+                                    leftSlideInfo = (nextColumn < column) ? self.slideInfoTo(row, column: nextColumn, merge: false) : nil
                                 }
                             } else { // if nearby tile is NOT already sliding
                                 if currentTile.value == nearbyTile.value {
                                     leftSlideInfo = self.slideInfoTo(row, column: ic, merge: true)
                                     leftSlideInfo!.tileToRemove = nearbyTile
                                 } else {
-                                    if ic + 1 < column {
-                                        leftSlideInfo = self.slideInfoTo(row, column: ic + 1, merge: false)
-                                    } else {
-                                        leftSlideInfo = nil
-                                    }
+                                    let nextColumn = ic + 1
+                                    leftSlideInfo = (nextColumn < column) ? self.slideInfoTo(row, column: nextColumn, merge: false) : nil
                                 }
                             }
                             break
                         }
                     }
                     currentTile.leftSlideInfo = leftSlideInfo
+                }
+            }
+        }
+    }
+
+    private func socializeOnRight() {
+        
+        for var row = 0; row < kGridSize; row++ { // iterate top to bottom
+            let lastColumn = kGridSize - 1
+            for var column = lastColumn; column >= 0; column-- { // iterate right to left
+                let index = indexForPosition(row, column)
+                if let currentTile = self.gridImageView.viewWithTag(tagForTileAtIndex(index)) as? TileView {
+                    
+                    var rightSlideInfo: TileSlideInfo? = self.slideInfoTo(row, column: lastColumn, merge: false)
+                    for var ic = column+1; ic < kGridSize; ic++ { // iterate to slide right
+                        let icIndex = indexForPosition(row, ic)
+                        if let nearbyTile = self.gridImageView.viewWithTag(tagForTileAtIndex(icIndex)) as? TileView {
+                            if let nearbyTileLeftSlideInfo = nearbyTile.rightSlideInfo {
+                                // if nearby tile is already sliding check if it is also merging
+                                if !nearbyTileLeftSlideInfo.merge &&  currentTile.value == nearbyTile.value {
+                                    // if nearby tile is NOT merging, and the values are equal then MERGE
+                                    rightSlideInfo = self.slideInfoTo(row, column: ic, merge: true)
+                                    rightSlideInfo!.tileToRemove = nearbyTile
+                                } else {
+                                    let nextColumn = nearbyTileLeftSlideInfo.destinationColumn - 1
+                                    rightSlideInfo = (nextColumn < column) ? self.slideInfoTo(row, column: nextColumn, merge: false) : nil
+                                }
+                            } else { // if nearby tile is NOT already sliding
+                                if currentTile.value == nearbyTile.value {
+                                    rightSlideInfo = self.slideInfoTo(row, column: ic, merge: true)
+                                    rightSlideInfo!.tileToRemove = nearbyTile
+                                } else {
+                                    let nextColumn = ic - 1
+                                    rightSlideInfo = (nextColumn < column) ? self.slideInfoTo(row, column: nextColumn, merge: false) : nil
+                                }
+                            }
+                            break
+                        }
+                    }
+                    currentTile.rightSlideInfo = rightSlideInfo
+                    
                 }
             }
         }
