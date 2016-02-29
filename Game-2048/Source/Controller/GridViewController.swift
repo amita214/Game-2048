@@ -167,7 +167,7 @@ class GridViewController: UIViewController {
                                 // if nearby tile is already sliding check if it is also merging
                                 if !nearbyTileLeftSlideInfo.merge &&  currentTile.value == nearbyTile.value {
                                     // if nearby tile is NOT merging, and the values are equal then MERGE
-                                    leftSlideInfo = self.slideInfoTo(row, column: ic, merge: true)
+                                    leftSlideInfo = self.slideInfoTo(row, column: nearbyTileLeftSlideInfo.destinationColumn, merge: true)
                                     leftSlideInfo!.tileToRemove = nearbyTile
                                 } else {
                                     let nextColumn = nearbyTileLeftSlideInfo.destinationColumn + 1
@@ -195,7 +195,7 @@ class GridViewController: UIViewController {
         
         for var row = 0; row < kGridSize; row++ { // iterate top to bottom
             let lastColumn = kGridSize - 1
-            for var column = lastColumn; column >= 0; column-- { // iterate right to left
+            for var column = lastColumn-1; column >= 0; column-- { // iterate right to left
                 let index = indexForPosition(row, column)
                 if let currentTile = self.gridImageView.viewWithTag(tagForTileAtIndex(index)) as? TileView {
                     
@@ -207,11 +207,11 @@ class GridViewController: UIViewController {
                                 // if nearby tile is already sliding check if it is also merging
                                 if !nearbyTileLeftSlideInfo.merge &&  currentTile.value == nearbyTile.value {
                                     // if nearby tile is NOT merging, and the values are equal then MERGE
-                                    rightSlideInfo = self.slideInfoTo(row, column: ic, merge: true)
+                                    rightSlideInfo = self.slideInfoTo(row, column: nearbyTileLeftSlideInfo.destinationColumn, merge: true)
                                     rightSlideInfo!.tileToRemove = nearbyTile
                                 } else {
                                     let nextColumn = nearbyTileLeftSlideInfo.destinationColumn - 1
-                                    rightSlideInfo = (nextColumn < column) ? self.slideInfoTo(row, column: nextColumn, merge: false) : nil
+                                    rightSlideInfo = (nextColumn > column) ? self.slideInfoTo(row, column: nextColumn, merge: false) : nil
                                 }
                             } else { // if nearby tile is NOT already sliding
                                 if currentTile.value == nearbyTile.value {
@@ -219,7 +219,7 @@ class GridViewController: UIViewController {
                                     rightSlideInfo!.tileToRemove = nearbyTile
                                 } else {
                                     let nextColumn = ic - 1
-                                    rightSlideInfo = (nextColumn < column) ? self.slideInfoTo(row, column: nextColumn, merge: false) : nil
+                                    rightSlideInfo = (nextColumn > column) ? self.slideInfoTo(row, column: nextColumn, merge: false) : nil
                                 }
                             }
                             break

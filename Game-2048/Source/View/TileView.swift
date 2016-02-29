@@ -92,7 +92,21 @@ class TileView: UIControl {
     
     private func slideTile(slideInfo: TileSlideInfo) {
         let index = indexForPosition(slideInfo.destinationRow, slideInfo.destinationColumn)
-        self.slideTo(index, frame: slideInfo.destinationFrame, merge: slideInfo.merge, completion: nil)
+//        self.slideTo(index, frame: slideInfo.destinationFrame, merge: slideInfo.merge, completion: nil)
+        
+        if slideInfo.merge {
+                print("\(self.index) -> \(index): \(slideInfo.merge)")
+        }
+        UIView.animateWithDuration(0.2, animations: {
+            self.frame = slideInfo.destinationFrame
+            }) { (completed) -> Void in
+                self.index = index
+                if slideInfo.merge {
+                    self.value *= 2
+                    slideInfo.tileToRemove?.removeFromSuperview()
+                }
+                self.leftSlideInfo = nil
+        }
     }
     
     // MARK: Slide
