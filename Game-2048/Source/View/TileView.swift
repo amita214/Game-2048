@@ -79,9 +79,6 @@ class TileView: UIControl {
     private func slideTile(slideInfo: TileSlideInfo) {
         let index = indexForPosition(slideInfo.destinationRow, slideInfo.destinationColumn)
         
-        if slideInfo.merge {
-                print("\(self.index) -> \(index): \(slideInfo.merge)")
-        }
         UIView.animateWithDuration(0.2, animations: {
             self.frame = slideInfo.destinationFrame
             }) { (completed) -> Void in

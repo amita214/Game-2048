@@ -19,6 +19,11 @@ class GridViewController: UIViewController {
     var gameOver = false
     @IBOutlet weak var gridImageView: UIImageView!
     
+    @IBOutlet weak var leftSwipeGestureRecognizer: UISwipeGestureRecognizer!
+    @IBOutlet weak var rightSwipeGestureRecognizer: UISwipeGestureRecognizer!
+    @IBOutlet weak var upwardSwipeGestureRecognizer: UISwipeGestureRecognizer!
+    @IBOutlet weak var downwardSwipeGestureRecognizer: UISwipeGestureRecognizer!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -47,30 +52,28 @@ class GridViewController: UIViewController {
         self.createRandomTile()
     }
     
-    @IBAction func didSwipeLeft(sender: AnyObject) {
-        NSNotificationCenter.defaultCenter().postNotificationName(kSwipeLeftNotification, object: nil)
-        
-        NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: "createRandomTile", userInfo: nil, repeats: false)
-    }
-    
-    @IBAction func didSwipeRight(sender: AnyObject) {
-        NSNotificationCenter.defaultCenter().postNotificationName(kSwipeRightNotification, object: nil)
-        
-        NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: "createRandomTile", userInfo: nil, repeats: false)
-    }
-    
-    @IBAction func didSwipeUp(sender: AnyObject) {
-        NSNotificationCenter.defaultCenter().postNotificationName(kSwipeUpNotification, object: nil)
-        
-        NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: "createRandomTile", userInfo: nil, repeats: false)
-    }
-    
-    @IBAction func didSwipeDown(sender: AnyObject) {
-        NSNotificationCenter.defaultCenter().postNotificationName(kSwipeDownNotification, object: nil)
+    @IBAction func didSwipe(sender: UISwipeGestureRecognizer) {
+        self.enableSwipeGestureRecognizers(false)
+        let name: String
+        switch sender {
+        case self.leftSwipeGestureRecognizer: name = kSwipeLeftNotification
+        case self.rightSwipeGestureRecognizer: name = kSwipeRightNotification
+        case self.upwardSwipeGestureRecognizer: name = kSwipeUpNotification
+        case self.downwardSwipeGestureRecognizer: name = kSwipeDownNotification
+        default: name = ""
+        }
+        NSNotificationCenter.defaultCenter().postNotificationName(name, object: nil)
         
         NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: "createRandomTile", userInfo: nil, repeats: false)
     }
 
+    private func enableSwipeGestureRecognizers(enable: Bool) {
+        self.leftSwipeGestureRecognizer.enabled = enable
+        self.rightSwipeGestureRecognizer.enabled = enable
+        self.upwardSwipeGestureRecognizer.enabled = enable
+        self.downwardSwipeGestureRecognizer.enabled = enable
+    }
+    
     // MARK: - Grid related calculation
     private func hDimensionForGrid(value: Double) -> CGFloat {
         return CGFloat(value) * self.gridImageView.frame.width / CGFloat(kRefDimension)
@@ -166,6 +169,8 @@ class GridViewController: UIViewController {
         self.socializeRight()
         self.socializeUp()
         self.socializeDown()
+        
+        self.enableSwipeGestureRecognizers(true)
     }
     
     private func slideInfoTo(row: Int, column: Int, merge: Bool) -> TileSlideInfo {

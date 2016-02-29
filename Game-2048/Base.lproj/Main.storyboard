@@ -27,7 +27,7 @@
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="mRS-sk-xlH"/>
                                     <barButtonItem title="Reset Game" id="8fZ-q6-RCC">
                                         <connections>
-                                            <action selector="resetGameAction:" destination="BYZ-38-t0r" id="bEr-7H-yxy"/>
+                                            <action selector="resetGameAction:" destination="BYZ-38-t0r" id="0Ko-tq-o9v"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -96,28 +96,32 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="downwardSwipeGestureRecognizer" destination="aaW-4v-Afy" id="VI0-rs-ha3"/>
                         <outlet property="gridImageView" destination="4l5-z5-VIr" id="ezU-9l-MCa"/>
+                        <outlet property="leftSwipeGestureRecognizer" destination="tIH-sh-uzp" id="kbO-zF-gfI"/>
+                        <outlet property="rightSwipeGestureRecognizer" destination="0lG-A8-nTc" id="mDb-Fn-YU7"/>
+                        <outlet property="upwardSwipeGestureRecognizer" destination="ltV-38-aMy" id="Psg-Cj-QtC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <swipeGestureRecognizer direction="left" id="tIH-sh-uzp" userLabel="Left Swipe Gesture Recognizer">
                     <connections>
-                        <action selector="didSwipeLeft:" destination="BYZ-38-t0r" id="yoR-Ec-LbE"/>
+                        <action selector="didSwipe:" destination="BYZ-38-t0r" id="btk-iY-Y0m"/>
                     </connections>
                 </swipeGestureRecognizer>
                 <swipeGestureRecognizer direction="right" id="0lG-A8-nTc" userLabel="Right Swipe Gesture Recognizer">
                     <connections>
-                        <action selector="didSwipeRight:" destination="BYZ-38-t0r" id="Tm3-T4-qLQ"/>
+                        <action selector="didSwipe:" destination="BYZ-38-t0r" id="8t0-tb-jzZ"/>
                     </connections>
                 </swipeGestureRecognizer>
                 <swipeGestureRecognizer direction="up" id="ltV-38-aMy" userLabel="Upward Swipe Gesture Recognizer">
                     <connections>
-                        <action selector="didSwipeUp:" destination="BYZ-38-t0r" id="oJT-ks-LP0"/>
+                        <action selector="didSwipe:" destination="BYZ-38-t0r" id="0cc-vM-vKM"/>
                     </connections>
                 </swipeGestureRecognizer>
                 <swipeGestureRecognizer direction="down" id="aaW-4v-Afy" userLabel="Downward Swipe Gesture Recognizer">
                     <connections>
-                        <action selector="didSwipeDown:" destination="BYZ-38-t0r" id="2iz-vI-N8N"/>
+                        <action selector="didSwipe:" destination="BYZ-38-t0r" id="Oa0-D4-g06"/>
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
