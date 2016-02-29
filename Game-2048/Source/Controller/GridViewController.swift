@@ -59,6 +59,18 @@ class GridViewController: UIViewController {
         NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: "createRandomTile", userInfo: nil, repeats: false)
     }
     
+    @IBAction func didSwipeUp(sender: AnyObject) {
+        NSNotificationCenter.defaultCenter().postNotificationName(kSwipeUpNotification, object: nil)
+        
+        NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: "createRandomTile", userInfo: nil, repeats: false)
+    }
+    
+    @IBAction func didSwipeDown(sender: AnyObject) {
+        NSNotificationCenter.defaultCenter().postNotificationName(kSwipeDownNotification, object: nil)
+        
+        NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: "createRandomTile", userInfo: nil, repeats: false)
+    }
+
     // MARK: - Grid related calculation
     private func hDimensionForGrid(value: Double) -> CGFloat {
         return CGFloat(value) * self.gridImageView.frame.width / CGFloat(kRefDimension)

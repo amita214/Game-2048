@@ -110,8 +110,16 @@
                         <action selector="didSwipeRight:" destination="BYZ-38-t0r" id="Tm3-T4-qLQ"/>
                     </connections>
                 </swipeGestureRecognizer>
-                <swipeGestureRecognizer direction="up" id="ltV-38-aMy" userLabel="Upward Swipe Gesture Recognizer"/>
-                <swipeGestureRecognizer direction="down" id="aaW-4v-Afy" userLabel="Downward Swipe Gesture Recognizer"/>
+                <swipeGestureRecognizer direction="up" id="ltV-38-aMy" userLabel="Upward Swipe Gesture Recognizer">
+                    <connections>
+                        <action selector="didSwipeUp:" destination="BYZ-38-t0r" id="oJT-ks-LP0"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="down" id="aaW-4v-Afy" userLabel="Downward Swipe Gesture Recognizer">
+                    <connections>
+                        <action selector="didSwipeDown:" destination="BYZ-38-t0r" id="2iz-vI-N8N"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="245" y="305"/>
         </scene>
