@@ -91,10 +91,19 @@ class GridViewController: UIViewController {
         return CGRectMake(origin.x, origin.y, self.hDimensionForGrid(kWidth), self.vDimensionForGrid(kHeight))
     }
     
+    private func areMoreMovesAvailable() -> Bool {
+        for tile in self.gridImageView.subviews as! [TileView] {
+            if tile.willSlide {
+                return true
+            }
+        }
+        return false
+    }
+    
     // MARK: - Tile creation, deletion
     func createRandomTile() {
         if !self.gameOver {
-            if self.gridImageView.subviews.count == kMaxTileCount {
+            if self.gridImageView.subviews.count == kMaxTileCount && !self.areMoreMovesAvailable(){
                 self.gameOver = true
                 
                 let alertController = UIAlertController(title: "Game Over", message: "Do you want to try again?", preferredStyle: .Alert)
@@ -153,8 +162,10 @@ class GridViewController: UIViewController {
     
     // MARK: - Slide calculations
     func socialize() {
-        self.socializeOnLeft()
-        self.socializeOnRight()
+        self.socializeLeft()
+        self.socializeRight()
+        self.socializeUp()
+        self.socializeDown()
     }
     
     private func slideInfoTo(row: Int, column: Int, merge: Bool) -> TileSlideInfo {
@@ -163,7 +174,7 @@ class GridViewController: UIViewController {
         return TileSlideInfo(destinationRow: row, destinationColumn: column, destinationFrame: frame, merge: merge, tileToRemove: nil)
     }
     
-    private func socializeOnLeft() {
+    private func socializeLeft() {
         
         for var row = 0; row < kGridSize; row++ { // iterate top to bottom
             
@@ -203,7 +214,7 @@ class GridViewController: UIViewController {
         }
     }
 
-    private func socializeOnRight() {
+    private func socializeRight() {
         
         for var row = 0; row < kGridSize; row++ { // iterate top to bottom
             let lastColumn = kGridSize - 1
@@ -244,7 +255,7 @@ class GridViewController: UIViewController {
         }
     }
 
-    private func socializeOnUp() {
+    private func socializeUp() {
         
         for var column = 0; column < kGridSize; column++ { // iterate left to right
             
@@ -252,7 +263,7 @@ class GridViewController: UIViewController {
                 let index = indexForPosition(row, column)
                 if let currentTile = self.gridImageView.viewWithTag(tagForTileAtIndex(index)) as? TileView {
                     
-                    var upSlideInfo: TileSlideInfo? = self.slideInfoTo(row, column: 0, merge: false)
+                    var upSlideInfo: TileSlideInfo? = self.slideInfoTo(0, column: column, merge: false)
                     for var ir = row-1; ir >= 0; ir-- { // iterate to slide up
                         let irIndex = indexForPosition(ir, column)
                         if let nearbyTile = self.gridImageView.viewWithTag(tagForTileAtIndex(irIndex)) as? TileView {
@@ -284,7 +295,7 @@ class GridViewController: UIViewController {
         }
     }
     
-    private func socializeOnDown() {
+    private func socializeDown() {
         
         for var column = 0; column < kGridSize; column++ { // iterate right to left
             

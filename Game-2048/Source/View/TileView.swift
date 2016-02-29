@@ -42,6 +42,12 @@ class TileView: UIControl {
     var upSlideInfo: TileSlideInfo!
     var downSlideInfo: TileSlideInfo!
     
+    var willSlide: Bool {
+        get {
+            return ((self.leftSlideInfo != nil) || (self.rightSlideInfo != nil) || (self.upSlideInfo != nil) || (self.downSlideInfo != nil))
+        }
+    }
+    
     private let tile = CAShapeLayer()
 
     override init(frame: CGRect) {
@@ -74,25 +80,8 @@ class TileView: UIControl {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: kSwipeDownNotification, object: nil)
     }
     
-    
-    func slideTo(index: Int, frame: CGRect, merge: Bool, completion: (() -> Void)?) {
-        print("\(self.index) -> \(index): \(merge)")
-        UIView.animateWithDuration(0.2, animations: {
-            self.frame = frame
-            }) { (completed) -> Void in
-                self.index = index
-                if merge {
-                    self.value *= 2
-                    self.leftSlideInfo.tileToRemove?.removeFromSuperview()
-                }
-                self.leftSlideInfo = nil
-                completion?()
-        }
-    }
-    
     private func slideTile(slideInfo: TileSlideInfo) {
         let index = indexForPosition(slideInfo.destinationRow, slideInfo.destinationColumn)
-//        self.slideTo(index, frame: slideInfo.destinationFrame, merge: slideInfo.merge, completion: nil)
         
         if slideInfo.merge {
                 print("\(self.index) -> \(index): \(slideInfo.merge)")
@@ -106,6 +95,9 @@ class TileView: UIControl {
                     slideInfo.tileToRemove?.removeFromSuperview()
                 }
                 self.leftSlideInfo = nil
+                self.rightSlideInfo = nil
+                self.upSlideInfo = nil
+                self.downSlideInfo = nil
         }
     }
     
