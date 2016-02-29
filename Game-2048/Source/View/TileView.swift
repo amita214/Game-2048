@@ -53,14 +53,10 @@ class TileView: UIControl {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        // add minute hand
         self.tile.bounds = CGRectMake(0.0, 0.0, frame.width, frame.height)
         self.tile.contents = UIImage(named: "\(value)")?.CGImage
         self.tile.position = CGPointMake(frame.width/2, frame.height/2)
         self.tile.anchorPoint = CGPointMake(0.5, 0.5)
-//        self.tile.fillColor = UIColor.blackColor().CGColor
-//        self.tile.shadowOffset = CGSizeMake(0.0, 3.0)
-//        self.tile.shadowOpacity = 0.3
         self.layer.addSublayer(self.tile)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "slideTileLeft", name: kSwipeLeftNotification, object: nil)
