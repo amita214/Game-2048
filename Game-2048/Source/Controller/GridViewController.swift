@@ -8,8 +8,6 @@
 
 import UIKit
 
-
-
 enum TileSwipeDirection {
     case Left, Right, Up, Down, None
 }
@@ -29,11 +27,23 @@ class GridViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "showWinningAlert", name: kWinningNotification, object: nil)
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
         self.createRandomTile()
         self.createRandomTile()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: kWinningNotification, object: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -44,6 +54,7 @@ class GridViewController: UIViewController {
     // MARK: - IB Action
     @IBAction func resetGameAction(sender: UIBarButtonItem?) {
         self.gameOver = false
+        self.enableSwipeGestureRecognizers(true)
         for tile in self.gridImageView.subviews {
             tile.removeFromSuperview()
         }
@@ -103,11 +114,22 @@ class GridViewController: UIViewController {
         return false
     }
     
+    // MARK: - Notification
+    func showWinningAlert() {
+        self.enableSwipeGestureRecognizers(false)
+        
+        let alertController = UIAlertController(title: "Congratulations", message: "You Won!!", preferredStyle: .Alert)
+        self.presentViewController(alertController, animated: true, completion: {
+            
+        })
+    }
+    
     // MARK: - Tile creation, deletion
     func createRandomTile() {
         if !self.gameOver {
             if self.gridImageView.subviews.count == kMaxTileCount && !self.areMoreMovesAvailable(){
                 self.gameOver = true
+                self.enableSwipeGestureRecognizers(false)
                 
                 let alertController = UIAlertController(title: "Game Over", message: "Do you want to try again?", preferredStyle: .Alert)
                 alertController.addAction(UIAlertAction(title: "Yes", style: .Default, handler: { (action) -> Void in

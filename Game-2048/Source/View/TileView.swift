@@ -34,6 +34,10 @@ class TileView: UIControl {
     var value: Int = 0 {
         didSet {
             self.tile.contents = UIImage(named: "\(value)")?.CGImage
+            
+            if value == 2048 {
+                NSNotificationCenter.defaultCenter().postNotificationName(kWinningNotification, object: nil)
+            }
         }
     }
     
